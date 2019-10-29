@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>apiai intent statistics</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+        <!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>-->
+        <script type="text/javascript" src="/static/chosen.jquery.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/apiai_stat.js"></script>
+        <script src="/static/c3_charts/d3.v3.js" charset="utf-8"></script>
+        <script src="/static/c3_charts/c3.min.js"></script>
+        <link href="/static/chosen.css" rel="stylesheet">
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/apiai_stat.css" rel="stylesheet" media="screen">
+        <link href="/static/c3_charts/c3.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="/static/apiai_chosen.js"></script>  <!--chosen settings for select input(need for on.change)-->
+		<script type="text/javascript" src="/static/tools.js"></script>
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-86519619-2', 'auto');
+         ga('send', 'pageview');
+
+        </script>
+	</head>
+	<body>
+		<ul class="nav nav-tabs">
+			<!--<li role="presentation"><a href="/">Inputs</a></li>
+			<li role="presentation"><a href="/resolved">Resolved</a></li>
+			<li role="presentation"><a href="/meta">Generate meta</a></li>
+			<li role="presentation"><a href="/upload">Upload xls</a></li>-->
+			<li role="presentation"><a href="/upload_crowdin">crowdin upload</a></li>
+            <li role="presentation"><a href="/apiai">api.ai</a></li>
+            <li role="presentation"><a href="/apiai_update">api.ai_update</a></li>
+            <li role="presentation" class="active"><a href="/apiai_stat">api.ai_stat</a></li>
+            <li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+            <li role="presentation"><a href="/apiai_diff">api.ai_diff</a></li>
+            <li role="presentation"><a href="/apiai_doc">api.ai_doc</a></li>
+            {% if user.is_authenticated  %}
+                {%if user.get_full_name%}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+                {% else %}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% if user.is_superuser  %}
+                <li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+            {% endif %}
+		</ul>
+        <h1>Api.ai intent statistics</h1>
+        <form class="form-inline" role="form">
+            <label for="agent_select_dropdown">Choose agent: </label>
+            <select name="server_select" size="1" id="agent_select_dropdown">
+                <option value="domains" selected>Domains</option>
+                <option value="domains_de">Domains_de</option>
+                <option value="domains_es">Domains_es</option>
+                <option value="domains_fr">Domains_fr</option>
+                <option value="domains_it">Domains_it</option>
+                <option value="domains_cn">Domains_zh-CN</option>
+            </select>
+            <button type="button" id="get_stat" class="btn btn-default">Count Intents</button>
+            <button type="button" id="get_stat_entity" class="btn btn-default">Count Entities</button>
+        </form>
+		{% csrf_token %}
+        <!--<button type="button" id="get_chart" class="btn btn-default">Get chart</button>-->
+        <div id="stat_process">
+		    <div id="process"></div>
+            <div id="myProgress">
+                <div id="myBar"></div>
+            </div>
+            <div id="spreadsheet_link"></div>
+        </div>
+		<div id="chart">
+
+		</div>
+        <h1>Api.ai agent overview</h1>
+        <form class="form-inline" role="form" action="/apiai_overview_create/" method="post">
+            {% csrf_token %}
+            <label for="agent_select_dropdown">Client Token: </label>
+            <input type="text" class="form-control" name="overview_token" id="overview_token" placeholder="Token" style="width: 350px;">
+            <input type="submit" id="get_overview" class="btn btn-default" value="Create Overview">
+        </form>
+        <div class="overview_link">
+            {% if link %}
+                <a href="{{link}}" target="_blank">overview spreadsheet</a>
+            {% endif %}
+        </div>
+	</body>
+</html>

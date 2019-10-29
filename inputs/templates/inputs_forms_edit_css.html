@@ -1,0 +1,15 @@
+{% extends 'inputs_forms_base_postless.html' %}
+{% block header_text %}Edit{% endblock %}
+{% block table %}
+	<form method="post">
+		Service: {{ form.service }}
+		Action: {{ form.action }}
+		Input: {{ form.input }}
+		Object: {{ form.object }}
+		Language: {{ form.language }}
+		{% csrf_token %}
+		<input class="btn btn-primary btn-xs" type="submit" value="submit"></input>
+		<a class="btn btn-danger btn-xs" href="{% url 'delete' %}?input_num={{Input}}">remove</a>
+		<a class="btn btn-default btn-xs" href="{% url 'input_page' %}">return</a>
+	</form>
+{% endblock %}

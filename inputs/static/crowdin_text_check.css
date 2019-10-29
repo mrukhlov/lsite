@@ -1,0 +1,24 @@
+/*.meta_maker{}
+.parse_wiki{}*/
+body {
+  /*font-family: Tahoma, serif;
+  font-family: Georgia;*/
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.meta_maker{padding-top: 10px;}
+.parse_wiki{padding-top: 10px;}
+
+#upload_form{padding-top: 10px;}
+#upload_form_button{padding-top: 10px;}
+#description{
+  padding-top: 10px;
+  padding-left: 20px;
+}
+
+/*div.box { height: 100px; width: 600px; }*/
+div.div1{ float: left; height: 100%; width: auto; }
+div.div2{  height: 100%; padding-top: 0.1px; }
+#text_check{padding-top: 25px; padding-left: 10px;}
+#okay_button {padding-top: 5px; padding-left: 10px;}

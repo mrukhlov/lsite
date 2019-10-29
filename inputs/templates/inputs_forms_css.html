@@ -1,0 +1,39 @@
+{% extends 'inputs_forms_base.html' %}
+{% block header_text %}Input submit{% endblock %}
+{% block table %}
+	<table id="id_list_table" class="table table-condensed">
+	<form method="POST">
+		{% csrf_token %}
+		<input type="submit" class="btn btn-xs btn-danger" value="remove selected" name="delete" formaction="/delete_group/"/>
+		<input type="submit" class="btn btn-xs btn-success" value="resolve selected" name="resolve" formaction="/resolve_group/"/>
+	<caption>Inputs list</caption>
+		<thead>
+		  <tr>
+			<th>#</th>
+			<th id="language">Language</th>
+			<th id="service">Service</th>
+			<th id="action">Action</th>
+			<th id="input">Input</th>
+			<th id="object">Object</th>
+		  </tr>
+		</thead>
+		<tbody id="fbody">
+		{%for input in InputsAll%}
+			<tr>
+				<td>{{ forloop.counter }}</td>
+				<td>{{ input.language }}</td>
+				<td>{{ input.service }}</td>
+				<td>{{ input.action }}</td>
+				<td>{{ input.input }}</td>
+				<td>{{ input.object }}</td>
+				<td>
+					<a class="btn btn-primary btn-xs" href="{% url 'edit' %}?input_num={{input.id}}" id="edit">edit</a>
+					<a class="btn btn-danger btn-xs" href="{% url 'delete' %}?input_num={{input.id}}" id="remove">remove</a>
+					<a class="btn btn-success btn-xs" href="{% url 'resolve' %}?input_num={{input.id}}"id="resolve">resolve</a>
+					<input type="checkbox" name="inputs" id="option{{input.id}}" value={{input.id}} />
+				</td>
+			</tr>
+		{%endfor%}
+		</tbody>
+	</table></form>
+{% endblock %}

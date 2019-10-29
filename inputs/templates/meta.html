@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		<title>Meta maker</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/static/bootstrap/css/meta.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+		<link href="{% static "meta.css" %}" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="/static/ladda-themeless.min.css" />
+		<script type="text/javascript" src="/static/ladda-spin.min.js"></script>
+		<script type="text/javascript" src="/static/ladda.min.js"></script>
+	</head>
+	<body>
+		<div role="tabpanel">
+			<ul class="nav nav-tabs">
+				<li role="presentation"><a href="/">Inputs</a></li>
+				<li role="presentation"><a href="/resolved">Resolved</a></li>
+			  	<li role="presentation" class="active"><a href="/meta">Generate meta</a></li>
+				<li role="presentation"><a href="/upload">Upload xls</a></li>
+				<li role="presentation"><a href="/upload_crowdin">Crowdin upload</a></li>
+                <li role="presentation"><a href="/apiai">api.ai</a></li>
+            	<li role="presentation"><a href="/apiai_update">api.ai_update</a></li>
+				<li role="presentation"><a href="/apiai_stat">api.ai_stat</a></li>
+            	<li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+				{% if user.is_authenticated  %}
+	                {%if user.get_full_name%}
+	                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+	                {% else %}
+	                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+	                {% endif %}
+				{% endif %}
+				{% if user.is_superuser  %}
+					<li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+				{% endif %}
+			</ul>
+		</div>
+		<div class="meta_maker">
+			<form method="post">
+				Meta name: {{ form.meta_name }}
+				Language: {{ form.language }}
+				{% csrf_token %}
+			<button type="submit" class="btn btn-xs btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label">Generate</span></button>
+		</div>
+		<div class="parse_wiki">
+			<form method="post">
+				Wiki page address: {{ wiki_form.site_name }}
+				Language: {{ wiki_form.language_wiki }}
+				{% csrf_token %}
+			<button type="submit" class="btn btn-xs btn-primary ladda-button" data-style="zoom-in"><span class="ladda-label">Generate</span></button>
+		</div>
+	<div class="container">
+		<div class="row">
+		</div>
+	</div>
+	</body>
+	<script>
+
+	// Bind normal buttons
+	Ladda.bind( 'div:not(.progress-demo) button', { timeout: 2000 } );
+
+	// Bind progress buttons and simulate loading progress
+	Ladda.bind( 'input[type=submit]', {
+		callback: function( instance ) {
+			var progress = 0;
+			var interval = setInterval( function() {
+				progress = Math.min( progress + Math.random() * 0.1, 1 );
+				instance.setProgress( progress );
+
+				if( progress === 1 ) {
+					instance.stop();
+					clearInterval( interval );
+				}
+			}, 200 );
+		}
+	} );
+
+	// You can control loading explicitly using the JavaScript API
+	// as outlined below:
+
+	// var l = Ladda.create( document.querySelector( 'button' ) );
+	// l.start();
+	// l.stop();
+	// l.toggle();
+	// l.isLoading();
+	// l.setProgress( 0-1 );
+
+</script>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>apiai_upload</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" media="screen">
+        <link rel="stylesheet" href="/static/apiai.css" media="screen">
+        <link rel="stylesheet" href="/static/css/animated_button.css" media="screen">
+        <link rel="stylesheet" href="/static/chosen.css" />
+        <script type="text/javascript" src="/static/aes.js"></script>
+        <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/chosen.jquery.js"></script>
+		<script type="text/javascript" src="/static/apiai_functions.js"></script>
+        <script type="text/javascript" src="/static/apiai_update.js"></script>
+        <script type="text/javascript" src="/static/apiai_chosen.js"></script>  <!--chosen settings for select input(need for on.change)-->
+        <!--<script type="text/javascript" src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>
+        <script type="text/javascript" src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js"></script>-->
+    </head>
+    <body>
+        <ul class="nav nav-tabs">
+            <!--<li role="presentation"><a href="/">Inputs</a></li>
+            <li role="presentation"><a href="/resolved">Resolved</a></li>
+            <li role="presentation"><a href="/meta">Generate meta</a></li>-->
+            <!--<li role="presentation"><a href="/meta">Upload xls</a></li>-->
+            <li role="presentation"><a href="/upload_crowdin">crowdin upload</a></li>
+            <li role="presentation"><a href="/apiai">api.ai</a></li>
+            <li role="presentation" class="active"><a href="/apiai_update">api.ai_update</a></li>
+            <li role="presentation"><a href="/apiai_stat">api.ai_stat</a></li>
+            <li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+            <li role="presentation"><a href="/apiai_diff">api.ai_diff</a></li>
+            <li role="presentation"><a href="/apiai_doc">api.ai_doc</a></li>
+            {% if user.is_authenticated  %}
+                {%if user.get_full_name%}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+                {% else %}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% if user.is_superuser  %}
+                <li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+            {% endif %}
+        </ul>
+        <h3>Fix templates</h3>
+        <div id="input_field" style="display: inline-flex">
+            <label for="server_change_dropdown">Server: </label>
+            <select name="server_select" size="1" id="template_server_change_dropdown" class="form-control" style="width:100px">
+                <!--<option value="aneeda">aneeda</option>
+                <option value="cloudcar">CloudCar</option>-->
+                <option value="prod" selected>Prod</option>
+                <option value="stage">Stage</option>
+                <option value="dev">Dev</option>
+            </select>
+            <label for="token_input">Token:</label>
+            <input type="text" id="token_input" name="input" style="width:350px" class="form-control">
+            <button type="button" id="send_token_button" class="btn btn-default">Fix Templates</button>
+        </div>
+        <h3>Update agent</h3>
+        <div id="server_settings">
+            <form class="form-inline" role="form">
+                <label for="server_change_dropdown">Choose server: </label>
+                <select name="server_select" size="1" id="server_change_dropdown">
+                    <option value="stage" selected>Stage</option>
+                    <option value="prod">Prod</option>
+                    <option value="aneeda">aneeda</option>
+                </select>
+                <label for="agent_select_dropdown">Choose agent: </label>
+                <input class="clearable_to" type="text" name="" value="" placeholder="" />
+                <select name="server_select" size="1" id="agent_select_dropdown">
+                    <option value="domains" selected>Domains</option>
+                    <option value="domains_de">Domains_de</option>
+                    <option value="domains_es">Domains_es</option>
+                    <option value="domains_fr">Domains_fr</option>
+                    <option value="domains_it">Domains_it</option>
+                    <option value="domains_cn">Domains_zh-CN</option>
+                    <option value="domains_ja">Domains_ja</option>
+                    <option value="SmartthingsV2">SmartThingsV2</option>
+                    <option value="aneeda">aneeda</option>
+                    <option value="aneeda-staging">aneeda-staging</option>
+                    <option value="aneeda-future">aneeda-future</option>
+                    <option value="aneeda-de-staging">aneeda-de-staging</option>
+                    <option value="aneeda-de-staging">aneeda-de-future</option>
+                    <option value="30SecToFlyExample">30SecToFlyExample</option>
+                    <option value="custom">custom</option>
+                </select>
+                <label for="intent_select_dropdown">Choose intent: </label>
+                <select name="server_select" size="1" id="intent_select_dropdown">
+                    <option value=""></option>
+                </select>
+                <button type="button" id="get_intent_list" class="btn btn-default">Refresh</button>
+            </form>
+        </div>
+        <div id="fileInputDivIntentUpd">Select or drop .txt file to update intents:</div>
+            <input id="fileInputIntentUpd" type="file" name="fileInputEntity" style="display: none;" />
+            <!--<input id="inputTextFeild" type="text" name="inputTextFeild">-->
+            <textarea id="inputTextField" rows="4" cols="50"></textarea>
+        <hr>
+        <button type="button" id="add_all_button" class="btn btn-default">&#8679; Add all</button>
+        <table id="result_sql">
+            <tbody>
+                <div id="ajax_inner_1"></div>
+                <tr id="sql_table_headings">
+                    <th>Result</th>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div id="ajax_section">
+            <button type="button" id="test_all_button" class="btn btn-default">&#8679; Test all</button>
+            <button type="button" id="ajax_link_button" class="btn btn-default">Get Link &#8681;</button>
+            <div id="ajax_inner"></div>
+        </div>
+        <hr>
+        <table id="result">
+            <tbody>
+                <div id="date_p"></div>
+                <tr id="headings">
+                    <th>Query</th>
+                    <th>Contexts</th>
+                    <th>Action</th>
+                    <th>Parameters</th>
+                    <th>Response</th>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		<title>Upload</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/static/bootstrap/css/meta.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+		<link href="{% static "crowdin.css" %}" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="/static/meta.css" />
+        <script type="text/javascript" src="/static/crowdin_upload.js"></script>
+        <script>
+         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+         ga('create', 'UA-86519619-2', 'auto');
+         ga('send', 'pageview');
+
+        </script>
+	</head>
+	<body>
+		<ul class="nav nav-tabs">
+			<!--<li role="presentation"><a href="/">Inputs</a></li>
+			<li role="presentation"><a href="/resolved">Resolved</a></li>
+			<li role="presentation"><a href="/meta">Generate meta</a></li>
+			<li role="presentation"><a href="/upload">Upload xls</a></li>-->
+			<li role="presentation" class="active"><a href="/upload_crowdin">crowdin upload</a></li>
+            <li role="presentation"><a href="/apiai">api.ai</a></li>
+            <li role="presentation"><a href="/apiai_update">api.ai_update</a></li>
+            <li role="presentation"><a href="/apiai_stat">api.ai_stat</a></li>
+            <li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+            <li role="presentation"><a href="/apiai_diff">api.ai_diff</a></li>
+            <li role="presentation"><a href="/apiai_doc">api.ai_doc</a></li>
+            {% if user.is_authenticated  %}
+                {%if user.get_full_name%}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+                {% else %}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% if user.is_superuser  %}
+                <li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+            {% endif %}
+		</ul>
+		<div class="box">
+            <div class="service-buttons">
+                <p class="service-buttons"><button class="btn btn-primary btn-sm" id="pull-me">Show buttons</button></p>
+                <p class="service-buttons"><button class="btn btn-primary btn-sm" id="toggle-list">Toggle List</button></p>
+            </div>
+            <div class="buttons">
+                <div class="div1">
+                    <h2>vm to csv</h2>
+                    <form action="/vm_to_csv/" method="post" enctype="multipart/form-data" id="vm_to_csv">
+                        {% csrf_token %}
+                        {{form_vm}}
+                        <div id="upload_form_button">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Upload"/>
+                        </div>
+                    </form>
+                    <h2>csv to vm</h2>
+                    <form action="/csv_to_vm/" method="post" enctype="multipart/form-data" id="csv_to_vm">
+                        {% csrf_token %}
+                        {{form_csv}}
+                        <div id="upload_form_button">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Upload"/>
+                        </div>
+                    </form>
+                    <h2>csv archive to vm</h2>
+                    <form action="/csv_archive_to_vm/" method="post" enctype="multipart/form-data" id="csv_archive_to_vm">
+                        {% csrf_token %}
+                        {{form_archive}}
+                        <div id="upload_form_button">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Upload"/>
+                        </div>
+                    </form>
+                    <h2>download crowdin vm archive</h2>
+                    <form method="post" action="/download_csv_archive/" id="download_csv_archive">
+                        {% csrf_token %}
+                        <button type="submit" formmethod="post" class="btn btn-primary btn-xs">Download</button>
+                    </form>
+                    <h2>upload vm to crowdin</h2>
+                    <form action="/vm_to_csv_upload/" method="post" enctype="multipart/form-data" id="vm_to_csv_upload">
+                        {% csrf_token %}
+                        {{form_vm_upload.file_vm}}
+                        <div id="upload_form_button">
+                            <input type="submit" class="btn btn-primary btn-xs" value="Upload to assistant-en"/>
+                        </div>
+                    </form>
+                    <br>
+                </div>
+            </div>
+            <div id="table">
+                <h2><a id="en_ling_project" href="https://crowdin.com/project/assistant-linguistics-english" target="_blank">"Assistant Linguistics English"</a> crowdin project</h2>
+                <table id="file_list_table" class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th id="file">File</th>
+                            <th id="percent">Percent Overall</th>
+                            <th id="options">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        {%for file in files_list%}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ file }}<br></td>
+                                <!--<td>{{ percent }}<br></td>-->
+                                <td>
+                                    <!--<a class="btn btn-success btn-xs" href="{% url 'move_crowdin' %}?file_name={{file}}" id="edit">move</a>
+                                    <a class="btn btn-danger btn-xs" href="{% url 'delete_crowdin' %}?file_name={{file}}" id="remove">delete</a>
+                                    <a class="btn btn-primary btn-xs" href="https://crowdin.com/project/assistant-linguistics-english/settings#files" target="_blank" id="settings">settings</a>-->
+                                    <!--<a class="btn btn-success btn-xs" href="{% url 'resolve' %}?input_num={{input.id}}"id="resolve">resolve</a>
+                                    <input type="checkbox" name="inputs" id="option{{input.id}}" value={{input.id}} />-->
+                                    <a class="btn btn-success btn-xs" href="{% url 'move_crowdin' %}?file_name={{file}}" id="edit"><span class="glyphicon glyphicon-export"></span></a>
+                                    <a class="btn btn-danger btn-xs" href="{% url 'delete_crowdin' %}?file_name={{file}}" id="remove"><span class="glyphicon glyphicon-remove"></span></a>
+                                    <a class="btn btn-primary btn-xs" href="https://crowdin.com/project/assistant-linguistics-english/settings#files" target="_blank" id="settings"><span class="glyphicon glyphicon-wrench"></span></a>
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            <div id="user_list">
+                <h2><a id="en_ling_project" href="https://crowdin.com/project/assistant-linguistics-english" target="_blank">"Assistant Linguistics English"</a> crowdin project</h2>
+                {% for key, value in files_split_split_split_dic %}
+                <ul class="level-1">
+					<li class="level-i">{{ key }}</li>
+					<ol class="level-2">
+						{% for i in value %}
+						{%if i|length = 1%}
+							<li class="level-ii">
+								<span class="filename_1">{{ i.0 }}</span>
+								{% with "/" as slash %}
+								<a class="btn btn-success btn-xs" href="{% url 'move_crowdin' %}?file_name={{ key }}{{ slash|escape }}{{i.0}}" id="edit">move</a>
+								<a class="btn btn-danger btn-xs" href="{% url 'delete_crowdin' %}?file_name={{ key }}{{ slash|escape }}{{i.0}}" id="remove">delete</a>
+								<a class="btn btn-primary btn-xs" href="https://crowdin.com/project/assistant-linguistics-english/settings#files" target="_blank" id="settings">settings</a>
+								{% endwith %}
+							</li>
+						{%else%}
+							{% for sub_key, valuee in value.items %}
+							<li class="level-ii">{{ sub_key }}
+								{% for value in valuee %}
+									<ol class="level-3">
+										<li class="level-iii">
+											<span class="filename_2">{{ value }}</span>
+											{% with "/" as slash %}
+											<a class="btn btn-success btn-xs" href="{% url 'move_crowdin' %}?file_name={{ key }}{{ slash|escape }}{{ sub_key }}{{ slash|escape }}{{value}}" id="edit">move</a>
+											<a class="btn btn-danger btn-xs" href="{% url 'delete_crowdin' %}?file_name={{ key }}{{ slash|escape }}{{ sub_key }}{{ slash|escape }}{{value}}" id="remove">delete</a>
+											<a class="btn btn-primary btn-xs" href="https://crowdin.com/project/assistant-linguistics-english/settings#files" target="_blank" id="settings">settings</a>
+											{% endwith %}
+										</li>
+									</ol>
+								{% endfor %}
+							</li>
+							{% endfor %}
+						{%endif%}
+						{% endfor %}
+					</ol>
+                </ul>
+                {% endfor %}
+            </div>
+		</div>
+	</body>
+</html>

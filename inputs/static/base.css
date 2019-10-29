@@ -1,0 +1,61 @@
+.jumbotron {
+	width: 110%;
+	margin-left: -60px;
+}
+
+#id_new_item {
+	margin-top: 2px;
+}
+
+h1 {
+    /*font-family: Georgia, sans-serif;*/
+}
+
+body {
+    /*font-family: Tahoma, serif;
+    font-family: Georgia, serif;*/
+}
+
+.selectpicker {
+	/*margin-top: 1ex;
+    font-family: Tahoma, serif;*/
+}
+
+.my_select_box {
+  /*width: 100px;
+	font-family: Tahoma, serif;*/
+ }
+
+tbody :hover {background: lightgray}
+
+.input {width: 320px}
+.edit_row{margin: 0px 0px 0px 50px}
+
+
+@media screen and (min-width:1920px){
+    .input-filter-container{margin: 0px 0px 10px -277px}
+    .row {margin: 0px -140px 0px -140px}
+    #edit{margin: 0px 0px 0px -40px}
+    #resolve{margin: 0px 0px 0px 0px}
+    #resolved_remove{margin: 0px 0px 0px -100px}
+    #input-form{width: 285px}
+}
+
+#input{width: 30%}
+#object{width: 30%}
+#language{width: 10px}
+/*#edit{margin: 0px 0px 0px -140px}*/
+
+#input-filter{margin: 0px 0px 0px 0px}
+
+.filter-table .quick { margin-left: 0.5em; font-size: 0.8em; text-decoration: none; }
+.fitler-table .quick:hover { text-decoration: underline; }
+td.alt { background-color: #ffc; background-color: rgba(255, 255, 0, 0.2); }
+
+#id_list_table {
+	width: 100%;
+}
+
+#input-filter-ling {
+	width: 100px;
+}

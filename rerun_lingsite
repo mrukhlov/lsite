@@ -1,0 +1,8 @@
+#!/bin/bash
+#declare var run_lingsite=../virtualenv/bin/gunicorn testsite.wsgi:application
+#$run_lingsite
+git pull
+sudo ../virtualenv/bin/python manage.py collectstatic --noinput
+sudo service nginx reload
+sudo pkill corn
+../virtualenv/bin/gunicorn --timeout=300 testsite.wsgi:application

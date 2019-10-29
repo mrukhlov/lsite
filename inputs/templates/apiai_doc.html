@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>apiai docs</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="/static/apiai.css" rel="stylesheet" media="screen">
+        <link href="/static/apiai_doc.css" rel="stylesheet" media="screen">
+        <link href="/static/css/animated_button.css" rel="stylesheet" media="screen">
+        <link href="/static/chosen.css" rel="stylesheet" media="screen">
+        <script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="/static/chosen.jquery.js"></script>
+        <!--<script type="text/javascript" src="/static/apiai.js"></script>-->
+        <!--<script type="text/javascript" src="/static/apiai_chosen.js"></script>-->  <!--chosen settings for select input(need for on.change)-->
+        <script type="text/javascript" src="/static/sorttable.js"></script>
+        <script type="text/javascript" src="/static/apiai_doc.js"></script>
+    </head>
+    <body>
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="/upload_crowdin">crowdin upload</a></li>
+            <li role="presentation"><a href="/apiai">api.ai</a></li>
+            <li role="presentation"><a href="/apiai_update">api.ai_update</a></li>
+            <li role="presentation"><a href="/apiai_stat">api.ai_stat</a></li>
+            <li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+            <li role="presentation"><a href="/apiai_diff">api.ai_diff</a></li>
+            <li role="presentation" class="active"><a href="/apiai_doc">api.ai_doc</a></li>
+            {% if user.is_authenticated  %}
+                {%if user.get_full_name%}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+                {% else %}
+                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% if user.is_superuser  %}
+                <li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+            {% endif %}
+        </ul>
+        <div class="doc_gen">
+            <h3>Doc generator</h3>
+            <p>Please create empty spreadsheet and share the doc with <b>apiaistatistics@appspot.gserviceaccount.com</b></p>
+            <div id="input_field">
+                <form class="form-inline" role="form">
+                    <label for="server_change_dropdown">Server: </label>
+                    <select name="server_select" size="1" id="server_change_dropdown" class="form-control" style="width:100px">
+                        <!--<option value="aneeda">aneeda</option>
+                        <option value="cloudcar">CloudCar</option>-->
+                        <option value="prod">Prod</option>
+                        <option value="stage" selected>Stage</option>
+                        <option value="dev" selected>Dev</option>
+                    </select>
+                    <label for="textInput">Token:</label>
+                    <input type="text" id="token_input" name="input" style="width:350px" class="form-control">
+                    <label for="textInput">SpreadSheet key:</label>
+                    <input type="text" id="spreadsheet_input" name="input" style="width:350px" class="form-control">
+                    <label for="textInput">Sheet name:</label>
+                    <input type="text" id="sheet_name" name="input" style="width:350px" class="form-control">
+                    <button type="button" id="send_token_button" class="btn btn-default">Create Doc</button>
+                </form>
+            </div>
+            <div id="link_place"></div>
+        </div>
+        <div class="agent_gen">
+            <h3>Agent generator</h3>
+            <p>Please create empty agent, empty spreadsheet (<a class="example_link" href="https://docs.google.com/spreadsheets/d/1DNuFwsympHIacFew9zKYPghy7y57_WtnSAAGE6HANIA/edit#gid=0" target="_blank">Spreadsheet Example</a>) and share the doc with <b>apiaistatistics@appspot.gserviceaccount.com</b>. After script is executed, please refresh agent tab.</p>
+            <div id="input_field_agent">
+                <form class="form-inline" role="form">
+                    <label for="server_change_dropdown">Server: </label>
+                    <select name="server_select" size="1" id="server_change_dropdown_agent" class="form-control" style="width:100px">
+                        <!--<option value="aneeda">aneeda</option>
+                        <option value="cloudcar">CloudCar</option>-->
+                        <option value="prod">Prod</option>
+                        <option value="stage" selected>Stage</option>
+                        <option value="dev" selected>Dev</option>
+                    </select>
+                    <label for="textInput">Token:</label>
+                    <input type="text" id="token_input_agent" name="input" style="width:350px" class="form-control">
+                    <label for="textInput">SpreadSheet key:</label>
+                    <input type="text" id="spreadsheet_input_agent" name="input" style="width:350px" class="form-control">
+                    <button type="button" id="send_token_button_agent" class="btn btn-default">Create Agent</button>
+                </form>
+            </div>
+            <div id="link_place_agent"></div>
+        </div>
+        <div class="sap_gen">
+            <h3>Sap Agent generator</h3>
+            <p>Please create empty agent, and share the doc (<a class="example_link" href="https://docs.google.com/spreadsheets/d/10OYl-17yEw9rqhjbtgdyCLsa4ZZ42jONeLP8EvzHfMc/edit#gid=0" target="_blank">Spreadsheet Example</a>) with <b>apiaistatistics@appspot.gserviceaccount.com</b>. After script is executed, please refresh agent tab.</p>
+            <div id="input_field_agent_sap">
+                <form class="form-inline" role="form">
+                    <label for="server_change_dropdown">Server: </label>
+                    <select name="server_select" size="1" id="server_change_dropdown_agent_sap" class="form-control" style="width:100px">
+                        <option value="prod">Prod</option>
+                        <option value="stage" selected>Stage</option>
+                        <option value="dev" selected>Dev</option>
+                    </select>
+                    <label for="textInput">Token:</label>
+                    <input type="text" id="token_input_agent_sap" name="input" style="width:350px" class="form-control">
+                    <label for="textInput">SpreadSheet key:</label>
+                    <input type="text" id="spreadsheet_input_agent_sap" name="input" style="width:350px" class="form-control">
+                    <button type="button" id="send_token_button_agent_sap" class="btn btn-default">Create Sap Agent</button>
+                </form>
+            </div>
+            <div id="link_place_agent_sap"></div>
+        </div>
+    </body>
+</html>

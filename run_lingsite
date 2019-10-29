@@ -1,0 +1,4 @@
+#!/bin/bash
+#declare var run_lingsite=../virtualenv/bin/gunicorn testsite.wsgi:application
+#$run_lingsite
+../virtualenv/bin/gunicorn testsite.wsgi:application

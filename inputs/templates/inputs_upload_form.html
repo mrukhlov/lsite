@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static %}
+		<title>Upload</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/static/bootstrap/css/meta.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="/static/jquery-2.1.3.min.js"></script>
+		<link href="{% static "meta.css" %}" rel="stylesheet" media="screen">
+		<!--<link href="{% static "meta.css" %}" rel="stylesheet" media="screen">
+		<link rel="stylesheet" href="/static/meta.css" />-->
+	</head>
+	<body>
+			<ul class="nav nav-tabs">
+				<li role="presentation"><a href="/">Inputs</a></li>
+				<li role="presentation"><a href="/resolved">Resolved</a></li>
+				<!--<li role="presentation"><a href="/meta">Generate meta</a></li>
+				<li role="presentation" class="active"><a href="/meta">Upload xls</a></li>-->
+				<li role="presentation"><a href="/upload_crowdin">Crowdin upload</a></li>
+                <li role="presentation"><a href="/apiai">api.ai</a></li>
+            	<li role="presentation"><a href="/apiai_update">api.ai_update</a></li>
+				<li role="presentation"><a href="/apiai_stat">api.ai_stat</a></li>
+            	<li role="presentation"><a href="/apiai_backup_list">api.ai_backup</a></li>
+				{% if user.is_authenticated  %}
+	                {%if user.get_full_name%}
+	                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.get_full_name }}</a></li>
+	                {% else %}
+	                    <li role="presentation" class="pull-right"><a href="/logout">logout {{ user.username }}</a></li>
+	                {% endif %}
+				{% endif %}
+				{% if user.is_superuser  %}
+					<li role="presentation" class="pull-right"><a href="/admin">admin</a></li>
+				{% endif %}
+			</ul>
+			<h2>Inputs submit from xls</h2>
+			<form action="/upload/" method="post" enctype="multipart/form-data" id="upload_form">
+				{% block content %}
+					{% csrf_token %}
+					{{form}}
+					<div id="upload_form_button">
+					<input type="submit" class="btn btn-primary btn-xs" value="Upload"/>
+					</div>
+				{% endblock %}
+			</form>
+		<div class="row" id="description">
+			<div>.xls file is required with "service|action|input|data" upper tabs.</div>
+			<!--<div><img src="{% static "xls_table.jpg" %}"></div>-->
+			<div><img src="/static/xls_table.jpg"></div>
+		</div>
+			<h2>Ru morphology</h2>
+			<form action="/upload_ru_morph/" method="post" enctype="multipart/form-data" id="upload_form">
+				{% csrf_token %}
+				{{form}}
+				<div id="upload_form_button">
+				<input type="submit" class="btn btn-primary btn-xs" value="Upload"/>
+				</div>
+			</form>
+	<div class="container">
+		<div class="row">
+		</div>
+	</div>
+	<!--<div><a class="btn btn-primary btn-xs" href="/"><class="icon-trash icon-white">back to main page</a></div>-->
+	</body>
+</html>

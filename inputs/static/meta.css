@@ -1,0 +1,18 @@
+/*.meta_maker{}
+.parse_wiki{}*/
+body {
+  /*font-family: Tahoma, serif;
+  font-family: "ubuntu mono",Liberation Sans, serif;*/
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.meta_maker{padding-top: 10px;}
+.parse_wiki{padding-top: 10px;}
+
+#upload_form{padding-top: 10px;}
+#upload_form_button{padding-top: 10px;}
+#description{
+  padding-top: 10px;
+  padding-left: 20px;
+}

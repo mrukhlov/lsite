@@ -1,0 +1,17 @@
+#id_new_item {
+	margin-top: 2ex;
+}
+
+body {
+    font-family: Tahoma, serif;
+}
+
+.selectpicker {
+	/*margin-top: 1ex;*/
+    font-family: Tahoma, serif;
+}
+
+.my_select_box {
+  /*width: 100px;*/
+	font-family: Tahoma, serif;
+ }

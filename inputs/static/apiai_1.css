@@ -1,0 +1,19 @@
+body {
+    /*font-family: Tahoma, serif;
+    font-family: Georgia, serif;*/
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#input {
+    width: 300px;
+}
+
+@media screen and (min-width:1920px){
+    .input-filter-container{margin: 0px 0px 10px -277px}
+    .row {margin: 0px -140px 0px -140px}
+    #edit{margin: 0px 0px 0px -40px}
+    #resolve{margin: 0px 0px 0px 0px}
+    #resolved_remove{margin: 0px 0px 0px -100px}
+    #input-form{width: 285px}
+}
